@@ -69,14 +69,9 @@ BOOSTER_DICT = \
      "scarce": B_DECR, "scarcely": B_DECR, "slight": B_DECR, "slightly": B_DECR, "somewhat": B_DECR,
      "sort of": B_DECR, "sorta": B_DECR, "sortof": B_DECR, "sort-of": B_DECR}
 
-# check for sentiment laden idioms that do not contain lexicon words (future work, not yet implemented)
-SENTIMENT_LADEN_IDIOMS = {"cut the mustard": 2, "hand to mouth": -2,
-                          "back handed": -2, "blow smoke": -2, "blowing smoke": -2,
-                          "upper hand": 1, "break a leg": 2,
-                          "cooking with gas": 2, "in the black": 2, "in the red": -2,
-                          "on the ball": 2, "under the weather": -2, "cashtag burn": 1.8, "wiseass cashtag": 3,
-                          "wimpy wiseass cashtag": 2.5, "cashtag bouncing": 4, "cashtag shorting": -4, "big moneytag": 2.5068807803165227,
-                          "cashtag short": -2.924125134262813}
+from adapted_chen_lexicon import denormalized_chen_lexicon
+# dictionary with chen lexicon
+SENTIMENT_LADEN_IDIOMS = denormalized_chen_lexicon
 
 # check for special case idioms and phrases containing lexicon words
 SPECIAL_CASES = {"the shit": 3, "the bomb": 3, "bad ass": 1.5, "badass": 1.5, "bus stop": 0.0,
@@ -594,13 +589,12 @@ if __name__ == '__main__':
                  "cashtag SHORT!!!",
                  "no cashtag bouncing",
                  "cashtag short but cashtag bouncing",
-                 "lol cashtag short"
-
-
-
-
-
-
+                 "lol cashtag short",
+                 "🐑 🐑",
+                 "whales 🐳",
+                 "money 😂",
+                 "😂 🤣🤣",
+                 "🐻 🐻"
 
         #"VADER is smart, handsome, and funny.",  # positive sentence example
                  # "VADER is shit.",
