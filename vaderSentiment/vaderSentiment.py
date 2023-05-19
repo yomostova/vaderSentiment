@@ -75,7 +75,8 @@ SENTIMENT_LADEN_IDIOMS = {"cut the mustard": 2, "hand to mouth": -2,
                           "upper hand": 1, "break a leg": 2,
                           "cooking with gas": 2, "in the black": 2, "in the red": -2,
                           "on the ball": 2, "under the weather": -2, "cashtag burn": 1.8, "wiseass cashtag": 3,
-                          "wimpy wiseass cashtag": 2.5}
+                          "wimpy wiseass cashtag": 2.5, "cashtag bouncing": 4, "cashtag shorting": -4, "big moneytag": 2.5068807803165227,
+                          "cashtag short": -2.924125134262813}
 
 # check for special case idioms and phrases containing lexicon words
 SPECIAL_CASES = {"the shit": 3, "the bomb": 3, "bad ass": 1.5, "badass": 1.5, "bus stop": 0.0,
@@ -408,22 +409,22 @@ class SentimentIntensityAnalyzer(object):
         if i >= 2:
             twoonezero = "{0} {1} {2}".format(words_and_emoticons_lower[i - 2],
                                           words_and_emoticons_lower[i - 1], words_and_emoticons_lower[i])
-            twoone = "{0} {1}".format(words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            sequences = [onezero, twoonezero, twoone]
+            #twoone = "{0} {1}".format(words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
+            sequences = [onezero, twoonezero] #here removed twoone
             raw_twoonezero = "{0} {1} {2}".format(words_and_emoticons[i - 2],
                                               words_and_emoticons[i - 1], words_and_emoticons[i])
-            raw_twoone = "{0} {1}".format(words_and_emoticons[i - 2], words_and_emoticons[i - 1])
-            raw_sequences = [raw_onezero, raw_twoonezero, raw_twoone]
+            #raw_twoone = "{0} {1}".format(words_and_emoticons[i - 2], words_and_emoticons[i - 1])
+            raw_sequences = [raw_onezero, raw_twoonezero]  #here removed twoone
 
         if i >= 3:
             threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
                                            words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            threetwo = "{0} {1}".format(words_and_emoticons_lower[i - 3], words_and_emoticons_lower[i - 2])
-            sequences = [onezero, twoonezero, twoone, threetwoone, threetwo]
+            #threetwo = "{0} {1}".format(words_and_emoticons_lower[i - 3], words_and_emoticons_lower[i - 2])
+            sequences = [onezero, twoonezero, threetwoone] #here removed twoone, threetwo
             raw_threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
                                                words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            raw_threetwo = "{0} {1}".format(words_and_emoticons_lower[i - 3], words_and_emoticons_lower[i - 2])
-            raw_sequences = [raw_onezero, raw_twoonezero, raw_twoone, raw_threetwoone, raw_threetwo]
+            #raw_threetwo = "{0} {1}".format(words_and_emoticons_lower[i - 3], words_and_emoticons_lower[i - 2])
+            raw_sequences = [raw_onezero, raw_twoonezero, raw_threetwoone]  #here removed twoone, raw_threetwo
 
         phrase_len = 0
 
@@ -443,7 +444,9 @@ class SentimentIntensityAnalyzer(object):
         # check for "no" as negation for the phrase, not part of the phrase
         if i>= phrase_len and words_and_emoticons_lower[i-phrase_len] == "no":
             valence *= N_SCALAR
-
+        #booster words check
+        if i >= phrase_len and words_and_emoticons_lower[i - phrase_len] in BOOSTER_DICT :
+            valence = valence + BOOSTER_DICT[words_and_emoticons_lower[i - phrase_len]]
         return valence
 
 
@@ -577,7 +580,29 @@ class SentimentIntensityAnalyzer(object):
 
 if __name__ == '__main__':
     # --- examples -------
-    sentences = [#"VADER is smart, handsome, and funny.",  # positive sentence example
+    sentences = ["cashtag bouncing",
+            "CASHTAG BOUNCING",
+                 "cashtag bouncing!!!",
+                  "frickin cashtag bouncing",
+                  "FRICKIN CASHTAG BOUNCING!!!",
+                  "no cashtag shorting",
+                  "cashtag kind of bouncing",
+                  "very big moneytag",
+                 "cashtag bouncing 😎",
+                 "cashtag short",
+                 "cashtag SHORT",
+                 "cashtag SHORT!!!",
+                 "no cashtag bouncing",
+                 "cashtag short but cashtag bouncing",
+                 "lol cashtag short"
+
+
+
+
+
+
+
+        #"VADER is smart, handsome, and funny.",  # positive sentence example
                  # "VADER is shit.",
                  # "VADER is the shit.",
                  # "VADER is",
@@ -585,7 +610,7 @@ if __name__ == '__main__':
                  # "This I can't stand",
                  #"I see now cashtag burn.", "I see now CASHTAG BURN", "I see now CASHTAG burn",
         #"I see no cashtag burn", "I see cashtag", "cashtag burn",
-        "wiseass cashtag", "wimpy wiseass cashtag"
+
                  # # punctuation emphasis handled correctly (sentiment intensity adjusted)
                  # "VADER is very smart, handsome, and funny.",
                  # # booster words handled correctly (sentiment intensity adjusted)
