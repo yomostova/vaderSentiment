@@ -419,12 +419,16 @@ class SentimentIntensityAnalyzer(object):
             raw_sequences = [raw_onezero, raw_twoonezero]
 
         if i >= 3:
-            threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
-                                               words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            sequences = [onezero, twoonezero, threetwoone]
-            raw_threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
-                                                   words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            raw_sequences = [raw_onezero, raw_twoonezero, raw_threetwoone]
+            # threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
+            #                                    words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
+            # raw_threetwoone = "{0} {1} {2}".format(words_and_emoticons[i - 3],
+            #                                        words_and_emoticons[i - 2], words_and_emoticons[i - 1])
+            threetwoonezero = "{0} {1} {2} {3}".format(words_and_emoticons_lower[i - 3],
+                                               words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1], words_and_emoticons_lower[i])
+            sequences = [onezero, twoonezero, threetwoonezero]
+            raw_threetwoonezero = "{0} {1} {2} {3}".format(words_and_emoticons[i - 3], words_and_emoticons[i - 3],
+                                               words_and_emoticons[i - 2], words_and_emoticons[i])
+            raw_sequences = [raw_onezero, raw_twoonezero, raw_threetwoonezero]
 
         phrase_len = 0
 
@@ -579,7 +583,8 @@ class SentimentIntensityAnalyzer(object):
 
 if __name__ == '__main__':
     # --- examples -------
-    sentences = ["cashtag short but cashtag bouncing",
+    sentences = ["🐻 🐻",
+        "cashtag short but cashtag bouncing",
         "cashtag bouncing",
         "CASHTAG BOUNCING",
         "cashtag bouncing!!!",
@@ -599,7 +604,7 @@ if __name__ == '__main__':
         "whales 🐳",
         "money 😂",
         "😂 🤣🤣",
-        "🐻 🐻"]
+        ]
 
     # "VADER is smart, handsome, and funny.",  # positive sentence example
     # "VADER is shit.",
