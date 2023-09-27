@@ -70,7 +70,7 @@ BOOSTER_DICT = \
      "scarce": B_DECR, "scarcely": B_DECR, "slight": B_DECR, "slightly": B_DECR, "somewhat": B_DECR,
      "sort of": B_DECR, "sorta": B_DECR, "sortof": B_DECR, "sort-of": B_DECR}
 
-# dictionary with chen lexicon
+# dictionary with crypto lexicon
 SENTIMENT_LADEN_IDIOMS = adapted_chen_lexicon
 
 # check for special case idioms and phrases containing lexicon words
@@ -398,7 +398,7 @@ class SentimentIntensityAnalyzer(object):
                 valence = valence + BOOSTER_DICT[n_gram]
         return valence
 
-    # Y: this method is by me
+    # Y: new method that scores idioms
     @staticmethod
     def _sentiment_phrases_check(valence, words_and_emoticons, i):
         words_and_emoticons_lower = [str(w).lower() for w in words_and_emoticons]
@@ -419,10 +419,6 @@ class SentimentIntensityAnalyzer(object):
             raw_sequences = [raw_onezero, raw_twoonezero]
 
         if i >= 3:
-            # threetwoone = "{0} {1} {2}".format(words_and_emoticons_lower[i - 3],
-            #                                    words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1])
-            # raw_threetwoone = "{0} {1} {2}".format(words_and_emoticons[i - 3],
-            #                                        words_and_emoticons[i - 2], words_and_emoticons[i - 1])
             threetwoonezero = "{0} {1} {2} {3}".format(words_and_emoticons_lower[i - 3],
                                                words_and_emoticons_lower[i - 2], words_and_emoticons_lower[i - 1], words_and_emoticons_lower[i])
             sequences = [onezero, twoonezero, threetwoonezero]
